@@ -2,6 +2,8 @@ package com.example.cinemate.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.example.cinemate.common.Constants.BASE_URL
+import com.example.cinemate.data.source.remote.MovieService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -32,7 +35,7 @@ object NetworkModule {
         writeTimeout(TIMEOUT, TimeUnit.SECONDS)
     }.build()
 
-    /*@Provides
+    @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient) = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -42,5 +45,5 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideProductService(retrofit: Retrofit) = retrofit.create<ProductService>()*/
+    fun provideProductService(retrofit: Retrofit) = retrofit.create<MovieService>()
 }

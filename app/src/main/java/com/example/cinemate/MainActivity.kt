@@ -10,7 +10,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.cinemate.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
@@ -18,8 +18,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_Cinemate)
         super.onCreate(savedInstanceState)
-
-        MainApplication.provideRetrofit(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

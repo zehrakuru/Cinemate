@@ -5,70 +5,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.cinemate.MainApplication
 import com.example.cinemate.R
 import com.example.cinemate.data.model.GetMoviesResponse
 import com.example.cinemate.data.model.GetSaleMovieResponse
 import com.example.cinemate.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragment : Fragment() {
+@AndroidEntryPoint
+class HomeFragment : Fragment(), MovieAdapter.ProductListener {
 
     private lateinit var binding : FragmentHomeBinding
-    private val movieAdapter by lazy {MovieAdapter()}
+    private val movieAdapter by lazy {MovieAdapter(this)}
     private val saleMovieAdapter by lazy { SaleMovieAdapter() }
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvSecond.adapter = movieAdapter
-        getProducts()
+        viewModel.getProducts()
+        observeData()
         binding.rvFirst.adapter = saleMovieAdapter
-        getSaleProducts()
+        viewModel.getSaleProducts()
+        observeSaleData()
     }
 
-    fun getProducts() {
-        MainApplication.movieService?.getProducts()?.enqueue(object : Callback<GetMoviesResponse> {
-            override fun onResponse(
-                call: Call<GetMoviesResponse>,
-                response: Response<GetMoviesResponse>
-            ) {
-                val result = response.body()?.products
-
-                if (result.isNullOrEmpty().not()) {
-                    movieAdapter.submitList(result)
-                }
-            }
-
-            override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-    }
-
-    fun getSaleProducts() {
-        MainApplication.movieService?.getSaleProducts()?.enqueue(object: Callback<GetSaleMovieResponse> {
-            override fun onResponse(
-                call: Call<GetSaleMovieResponse>,
-                response: Response<GetSaleMovieResponse>
-            ) {
-                val result = response.body()?.products
-
-                if(result.isNullOrEmpty().not()) {
-                    saleMovieAdapter.submitList(result)
-                }
-            }
-
-            override fun onFailure(call: Call<GetSaleMovieResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        }
-        )
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,5 +44,36 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater,container,false)
         return binding.root
+    }
+
+    override fun onProductClick(id: Int) {
+        val action = HomeFragmentDirections.actionHomeToDetail(id)
+        findNavController().navigate(action)
+    }
+
+    private fun observeData() {
+        viewModel.productsLiveData.observe(viewLifecycleOwner) {
+            if(it != null) {
+                movieAdapter.submitList(it)
+            } else {
+                Snackbar.make(requireView(), "Empty!", 1000).show()
+            }
+        }
+        viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+            Snackbar.make(requireView(), it, 1000).show()
+        }
+    }
+
+    private fun observeSaleData() {
+        viewModel.saleProductsLiveData.observe(viewLifecycleOwner) {
+            if (it != null) {
+                saleMovieAdapter.submitList(it)
+            } else {
+                Snackbar.make(requireView(), "Empty", 1000).show()
+            }
+        }
+        viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+            Snackbar.make(requireView(), it, 1000).show()
+        }
     }
 }

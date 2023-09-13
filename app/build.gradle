@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
     id 'kotlin-kapt'
+    id("kotlin-parcelize")
+    id("androidx.navigation.safeargs")
     id 'dagger.hilt.android.plugin'
 }
 
@@ -50,7 +52,7 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.0.0")
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.0")
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
