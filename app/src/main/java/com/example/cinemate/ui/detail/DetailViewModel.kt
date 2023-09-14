@@ -3,9 +3,11 @@ package com.example.cinemate.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +27,9 @@ class DetailViewModel @Inject constructor(private val productsRepository: Produc
     }
 
     fun getProductDetail(id:Int) {
-        productsRepository.getProductDetail(id)
+        viewModelScope.launch {
+            productsRepository.getProductDetail(id)
+        }
     }
 
 }

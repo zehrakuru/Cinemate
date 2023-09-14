@@ -18,64 +18,29 @@ class ProductsRepository(private val movieService: MovieService) {
     val productDetailLiveData = MutableLiveData<Product?>()
     val errorMessageLiveData = MutableLiveData<String>()
 
-    fun getProducts() {
-        movieService.getProducts().enqueue(object : Callback<GetMoviesResponse> {
-            override fun onResponse(
-                call: Call<GetMoviesResponse>,
-                response: Response<GetMoviesResponse>
-            ) {
-                val result = response.body()?.products
+    suspend fun getProducts() {
+        val result = movieService.getProducts().products
 
-                if (result.isNullOrEmpty().not()) {
-                    productsLiveData.value = result
-                } else {
-                    productsLiveData.value = null
-                }
-            }
-
-            override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                errorMessageLiveData.value = t.message.orEmpty()
-            }
-
-        })
-    }
-
-    fun getSaleProducts() {
-        movieService.getSaleProducts().enqueue(object: Callback<GetSaleMovieResponse> {
-            override fun onResponse(
-                call: Call<GetSaleMovieResponse>,
-                response: Response<GetSaleMovieResponse>
-            ) {
-                val result = response.body()?.products
-
-                if(result.isNullOrEmpty().not()) {
-                    saleProductsLiveData.value = result
-                } else {
-                    saleProductsLiveData.value = result
-                }
-            }
-
-            override fun onFailure(call: Call<GetSaleMovieResponse>, t: Throwable) {
-                errorMessageLiveData.value = t.message.orEmpty()
-            }
-
+        if (result.isNullOrEmpty().not()) {
+            productsLiveData.value = result
+        } else {
+            productsLiveData.value = null
         }
-        )
     }
 
-    fun getProductDetail(id:Int) {
-        movieService.getProductDetail(id).enqueue(object : Callback<GetProductDetailResponse> {
-            override fun onResponse(
-                call: Call<GetProductDetailResponse>,
-                response: Response<GetProductDetailResponse>
-            ) {
-                productDetailLiveData.value = response.body()?.product
-            }
+    suspend fun getSaleProducts() {
+        val result = movieService.getSaleProducts().products
 
-            override fun onFailure(call: Call<GetProductDetailResponse>, t: Throwable) {
-                errorMessageLiveData.value = t.message.orEmpty()
-            }
+        if(result.isNullOrEmpty().not()) {
+            saleProductsLiveData.value = result
+        } else {
+            saleProductsLiveData.value = null
+        }
+    }
 
-        })
+    suspend fun getProductDetail(id:Int) {
+
+        productDetailLiveData.value = movieService.getProductDetail(id).product
+
     }
 }

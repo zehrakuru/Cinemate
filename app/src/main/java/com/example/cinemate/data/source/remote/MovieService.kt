@@ -15,15 +15,17 @@ interface MovieService {
 
     @Headers("store: cinemate")
     @GET(GET_PRODUCTS)
-    fun getProducts(): Call<GetMoviesResponse>
+    suspend fun getProducts(): GetMoviesResponse
 
     @Headers("store: cinemate")
     @GET(GET_SALE_PRODUCTS)
-    fun getSaleProducts() : Call<GetSaleMovieResponse>
+    suspend fun getSaleProducts() : GetSaleMovieResponse
 
     @Headers("store: cinemate")
     @GET(GET_PRODUCT_DETAIL)
-    fun getProductDetail(
+    suspend fun getProductDetail(
         @Query("id") id: Int
-    ) : Call<GetProductDetailResponse>
+    ) : GetProductDetailResponse
+
+
 }

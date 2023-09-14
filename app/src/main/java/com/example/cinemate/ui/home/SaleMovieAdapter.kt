@@ -9,22 +9,29 @@ import com.example.cinemate.common.loadImage
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.databinding.ItemMovieCardBinding
 
-class SaleMovieAdapter : ListAdapter<Product, SaleMovieAdapter.SaleMovieViewHolder>(ProductDiffCallBack()) {
+class SaleMovieAdapter(
+    private val productListener: SaleMovieAdapter.ProductListener
+) : ListAdapter<Product, SaleMovieAdapter.SaleMovieViewHolder>(ProductDiffCallBack()) {
 
-    class SaleMovieViewHolder(private val binding: ItemMovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
+    class SaleMovieViewHolder(
+        private val binding: ItemMovieCardBinding,
+        private val productListener: SaleMovieAdapter.ProductListener) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) = with(binding) {
             tvMovieName.text = product.title
             tvPrice.text = "$ ${product.price}"
             tvSalePrice.text = "\$ ${product.salePrice}"
 
             imageViewMovie.loadImage(product.imageOne)
-        }
 
+            root.setOnClickListener {
+                productListener.onSaleClick(product.id ?: 1)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SaleMovieViewHolder =
         SaleMovieViewHolder(
-            ItemMovieCardBinding.inflate(LayoutInflater.from(parent.context), parent,false)
+            ItemMovieCardBinding.inflate(LayoutInflater.from(parent.context), parent,false), productListener
         )
 
     override fun onBindViewHolder(holder: SaleMovieViewHolder, position: Int) {
@@ -39,5 +46,9 @@ class SaleMovieAdapter : ListAdapter<Product, SaleMovieAdapter.SaleMovieViewHold
         override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface ProductListener {
+        fun onSaleClick(id:Int)
     }
 }

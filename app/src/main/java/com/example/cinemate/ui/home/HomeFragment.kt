@@ -19,11 +19,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), MovieAdapter.ProductListener {
+class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.ProductListener {
 
     private lateinit var binding : FragmentHomeBinding
     private val movieAdapter by lazy {MovieAdapter(this)}
-    private val saleMovieAdapter by lazy { SaleMovieAdapter() }
+    private val saleMovieAdapter by lazy { SaleMovieAdapter(this) }
     private val viewModel by viewModels<HomeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,5 +75,10 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener {
         viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
             Snackbar.make(requireView(), it, 1000).show()
         }
+    }
+
+    override fun onSaleClick(id: Int) {
+        val action = HomeFragmentDirections.actionHomeToDetail(id)
+        findNavController().navigate(action)
     }
 }
