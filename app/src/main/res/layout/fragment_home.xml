@@ -7,6 +7,7 @@
     android:background="@drawable/bg_gradient"
     tools:context=".ui.home.HomeFragment">
 
+
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="match_parent"
@@ -24,19 +25,43 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:background="@drawable/white_bg"
+                android:layout_margin="15dp"
+                android:background="@drawable/border_white_corner"
+                android:elevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/rubik_black"
+                    android:text="Hello,"
+                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                    app:layout_constraintStart_toStartOf="@+id/toolbar"
+                    app:layout_constraintTop_toTopOf="@+id/toolbar" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/rubik_medium"
+                    android:text="see what's new today!"
+                    app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+                    app:layout_constraintStart_toStartOf="@+id/toolbar" />
+            </androidx.appcompat.widget.Toolbar>
 
             <TextView
                 android:id="@+id/txSale"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/rubik_bold"
                 android:text="On Sale"
                 android:textSize="22sp"
@@ -49,8 +74,7 @@
                 android:id="@+id/rvFirst"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_margin="15dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +100,7 @@
                 android:id="@+id/titleAllMovies"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="22dp"
                 android:layout_marginTop="16dp"
                 android:text="All Movies"
                 android:textColor="@color/white"
@@ -87,29 +111,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvFirst"
                 app:layout_constraintVertical_bias="0.443" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/rubik_black"
-                android:text="Hello,"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintStart_toStartOf="@+id/toolbar"
-                app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/rubik_medium"
-                android:text="See what's new today!"
-                app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-                app:layout_constraintStart_toStartOf="@+id/toolbar" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

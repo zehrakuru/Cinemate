@@ -14,7 +14,8 @@ class SaleMovieAdapter : ListAdapter<Product, SaleMovieAdapter.SaleMovieViewHold
     class SaleMovieViewHolder(private val binding: ItemMovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) = with(binding) {
             tvMovieName.text = product.title
-            tvPrice.text = "${product.price}"
+            tvPrice.text = "$ ${product.price}"
+            tvSalePrice.text = "\$ ${product.salePrice}"
 
             imageViewMovie.loadImage(product.imageOne)
         }

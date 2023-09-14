@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.cinemate.MainApplication
@@ -41,16 +42,22 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getProductDetail(args.id)
+        observeData()
+
+        binding.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun observeData() = with(binding) {
         viewModel.productDetailLiveData.observe(viewLifecycleOwner) {product ->
             if(product != null) {
-            //ivMoviePoster.loadImage(result.imageOne)
-            tvMovieTitle.text = product.title
-            priceNum.text = "${product.price}"
-            tvCategory.text = product.category
-            txtDescDetail.text = product.description
+                ivMoviePoster.loadImage(product.imageOne)
+                tvMovieTitle.text = product.title
+                priceNum.text = "$ ${product.price}"
+                tvCategory.text = product.category
+                txtDescDetail.text = product.description
+                ratingBar.rating = ((product.rate)?.toFloat() ?: 1) as Float
             } else {
                 Snackbar.make(requireView(), "Empty", 1000).show()
             }

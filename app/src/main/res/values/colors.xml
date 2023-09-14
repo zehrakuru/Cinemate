@@ -8,7 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lavender">#8692f7</color>
-    <color name="backgroundStartColor">#9678B6</color>
+    <color name="backgroundStartColor">#8692f7</color>
     <color name="backgroundCenterColor">#E6E6FA</color>
     <color name="backgroundEndColor">#967bb6</color>
 </resources>
