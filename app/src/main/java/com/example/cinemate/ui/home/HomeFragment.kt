@@ -5,10 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.cinemate.MainApplication
 import com.example.cinemate.R
+import com.example.cinemate.common.gone
+import com.example.cinemate.common.visible
 import com.example.cinemate.data.model.GetMoviesResponse
 import com.example.cinemate.data.model.GetSaleMovieResponse
 import com.example.cinemate.databinding.FragmentHomeBinding
@@ -56,12 +59,18 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
             when(state) {
                 is HomeState.Data -> {
                     movieAdapter.submitList(state.products)
+                    binding.progressBar.gone()
                 }
                 is HomeState.SaleData -> {
                     saleMovieAdapter.submitList(state.products)
+                    binding.progressBar.gone()
                 }
                 is HomeState.Error -> {
                     Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                    binding.progressBar.gone()
+                }
+                is HomeState.Loading -> {
+                    binding.progressBar.visible()
                 }
             }
         }

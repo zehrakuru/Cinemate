@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(private val productsRepository: Products
 
     fun getProducts() {
         viewModelScope.launch {
-
+            _homeState.value = HomeState.Loading
             val result = productsRepository.getProducts()
 
             when (result) {
@@ -55,6 +55,7 @@ class HomeViewModel @Inject constructor(private val productsRepository: Products
 }
 
 sealed interface HomeState {
+    object Loading: HomeState
     data class Data(val products: List<Product?>) : HomeState
     data class SaleData(val products: List<Product?>) : HomeState
     data class Error(val throwable: Throwable) : HomeState
