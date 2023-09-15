@@ -50,21 +50,22 @@ class DetailFragment : Fragment() {
     }
 
     private fun observeData() = with(binding) {
-        viewModel.productDetailLiveData.observe(viewLifecycleOwner) {product ->
-            if(product != null) {
-                ivMoviePoster.loadImage(product.imageOne)
-                tvMovieTitle.text = product.title
-                priceNum.text = "$ ${product.price}"
-                tvCategory.text = product.category
-                txtDescDetail.text = product.description
-                ratingBar.rating = ((product.rate)?.toFloat() ?: 1) as Float
-            } else {
-                Snackbar.make(requireView(), "Empty", 1000).show()
-            }
-        }
 
-        viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
-            Snackbar.make(requireView(), it, 1000).show()
+        viewModel.detailState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is DetailState.Data -> {
+                    ivMoviePoster.loadImage(state.product.imageOne)
+                    tvMovieTitle.text = state.product.title
+                    priceNum.text = "$ ${state.product.price}"
+                    tvCategory.text = state.product.category
+                    txtDescDetail.text = state.product.description
+                    ratingBar.rating = ((state.product.rate)?.toFloat() ?: 1) as Float
+                }
+
+                is DetailState.Error -> {
+                    Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                }
+            }
         }
     }
 }

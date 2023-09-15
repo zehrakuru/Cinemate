@@ -1,14 +1,16 @@
 package com.example.cinemate.data.source.remote
 
+import com.example.cinemate.common.Constants.Endpoint.ADD_TO_CART
 import com.example.cinemate.common.Constants.Endpoint.GET_PRODUCTS
 import com.example.cinemate.common.Constants.Endpoint.GET_PRODUCT_DETAIL
 import com.example.cinemate.common.Constants.Endpoint.GET_SALE_PRODUCTS
-import com.example.cinemate.data.model.GetMoviesResponse
-import com.example.cinemate.data.model.GetProductDetailResponse
-import com.example.cinemate.data.model.GetSaleMovieResponse
+import com.example.cinemate.common.Constants.Endpoint.SEARCH_PRODUCT
+import com.example.cinemate.data.model.*
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface MovieService {
@@ -27,5 +29,9 @@ interface MovieService {
         @Query("id") id: Int
     ) : GetProductDetailResponse
 
-
+    @Headers("store: cinemate")
+    @GET(SEARCH_PRODUCT)
+    suspend fun searchProduct(
+        @Query("query") query: String?
+    ) : SearchProductResponse
 }

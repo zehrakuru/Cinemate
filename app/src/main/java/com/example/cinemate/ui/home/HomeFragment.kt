@@ -31,10 +31,10 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
 
         binding.rvSecond.adapter = movieAdapter
         viewModel.getProducts()
-        observeData()
+
         binding.rvFirst.adapter = saleMovieAdapter
         viewModel.getSaleProducts()
-        observeSaleData()
+        observeData()
     }
 
     override fun onCreateView(
@@ -52,28 +52,18 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
     }
 
     private fun observeData() {
-        viewModel.productsLiveData.observe(viewLifecycleOwner) {
-            if(it != null) {
-                movieAdapter.submitList(it)
-            } else {
-                Snackbar.make(requireView(), "Empty!", 1000).show()
+        viewModel.homeState.observe(viewLifecycleOwner) { state ->
+            when(state) {
+                is HomeState.Data -> {
+                    movieAdapter.submitList(state.products)
+                }
+                is HomeState.SaleData -> {
+                    saleMovieAdapter.submitList(state.products)
+                }
+                is HomeState.Error -> {
+                    Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                }
             }
-        }
-        viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
-            Snackbar.make(requireView(), it, 1000).show()
-        }
-    }
-
-    private fun observeSaleData() {
-        viewModel.saleProductsLiveData.observe(viewLifecycleOwner) {
-            if (it != null) {
-                saleMovieAdapter.submitList(it)
-            } else {
-                Snackbar.make(requireView(), "Empty", 1000).show()
-            }
-        }
-        viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
-            Snackbar.make(requireView(), it, 1000).show()
         }
     }
 
