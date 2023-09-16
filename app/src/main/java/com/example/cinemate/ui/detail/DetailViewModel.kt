@@ -53,6 +53,5 @@ class DetailViewModel @Inject constructor(private val productsRepository: Produc
 sealed interface DetailState {
     data class Data(val product: Product) : DetailState
     data class Error(val throwable: Throwable) : DetailState
-
     data class AddToBag(val baseResponse: BaseResponse) : DetailState
 }

@@ -49,7 +49,11 @@
         android:id="@+id/cartFragment"
         android:name="com.example.cinemate.ui.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartToDetail"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.cinemate.ui.favorites.FavoritesFragment"

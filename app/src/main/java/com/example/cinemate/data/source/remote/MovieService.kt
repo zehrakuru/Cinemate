@@ -1,6 +1,8 @@
 package com.example.cinemate.data.source.remote
 
 import com.example.cinemate.common.Constants.Endpoint.ADD_TO_CART
+import com.example.cinemate.common.Constants.Endpoint.DELETE_FROM_CART
+import com.example.cinemate.common.Constants.Endpoint.GET_CART_PRODUCTS
 import com.example.cinemate.common.Constants.Endpoint.GET_PRODUCTS
 import com.example.cinemate.common.Constants.Endpoint.GET_PRODUCT_DETAIL
 import com.example.cinemate.common.Constants.Endpoint.GET_SALE_PRODUCTS
@@ -39,5 +41,17 @@ interface MovieService {
     @POST(ADD_TO_CART)
     suspend fun addToCart(
         @Body addToCartRequest: AddToCartRequest
+    ) : BaseResponse
+
+    @Headers("store: cinemate")
+    @GET(GET_CART_PRODUCTS)
+    suspend fun getCartProducts(
+        @Query("userId") userId : String?
+    ) : GetCartProductsResponse
+
+    @Headers("store: cinemate")
+    @POST(DELETE_FROM_CART)
+    suspend fun deleteFromCart (
+        @Body deleteFromCartRequest: DeleteFromCartRequest
     ) : BaseResponse
 }

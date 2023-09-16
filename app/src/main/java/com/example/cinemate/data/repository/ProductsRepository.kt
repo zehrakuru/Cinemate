@@ -83,4 +83,31 @@ class ProductsRepository(private val movieService: MovieService) {
         }
     }
 
+    suspend fun deleteFromCart(deleteFromCartRequest: DeleteFromCartRequest) : Resource<BaseResponse> {
+        return try {
+            val result = movieService.deleteFromCart(deleteFromCartRequest)
+
+            if(result.status == 200) {
+                Resource.Success(result)
+            } else {
+                Resource.Error(Exception(result.message.toString()))
+            }
+        } catch(e: Exception) {
+            Resource.Error(e)
+        }
+    }
+
+    suspend fun getCartProducts(userId:String?) : Resource<List<Product?>> {
+        return try {
+            val result = movieService.getCartProducts(userId).products
+
+            if(result != null) {
+                Resource.Success(result)
+            } else {
+                Resource.Error(Exception("The Cart is empty!"))
+            }
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
+    }
 }

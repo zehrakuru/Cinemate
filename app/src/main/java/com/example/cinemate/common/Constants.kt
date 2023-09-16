@@ -9,5 +9,7 @@ object Constants {
         const val GET_PRODUCT_DETAIL = "get_product_detail.php"
         const val ADD_TO_CART = "add_to_cart.php"
         const val SEARCH_PRODUCT = "search_product.php"
+        const val GET_CART_PRODUCTS = "get_cart_products.php"
+        const val DELETE_FROM_CART = "delete_from_cart.php"
     }
 }

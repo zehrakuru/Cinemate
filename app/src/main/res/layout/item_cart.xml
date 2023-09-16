@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="180dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
+        android:layout_margin="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,6 +21,19 @@
             android:layout_height="match_parent"
             android:background="@color/background">
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivMoviePoster"
+                android:layout_width="120dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundimageview" />
+
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
@@ -28,7 +42,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/rubik_bold"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/ivMoviePoster"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="MovieName" />
 
@@ -37,62 +51,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="42dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/rubik"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCategory"
+                app:layout_constraintStart_toEndOf="@id/ivMoviePoster"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
                 tools:text="2 x 30 TL" />
 
             <Button
                 android:id="@+id/btnPlusFood"
                 android:layout_width="42dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="32dp"
                 android:backgroundTint="@color/lavender"
                 android:text="+"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnDelete"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.487" />
+                app:layout_constraintTop_toBottomOf="@+id/moviePrice" />
 
             <Button
                 android:id="@+id/btnMinusFood"
                 android:layout_width="42dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="82dp"
+                android:layout_marginStart="42dp"
                 android:backgroundTint="@color/lavender"
                 android:text="-"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvCategory"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.487" />
+                app:layout_constraintStart_toEndOf="@+id/ivMoviePoster"
+                app:layout_constraintTop_toBottomOf="@+id/moviePrice" />
 
             <TextView
                 android:id="@+id/foodAmountBasket"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                tools:text="0"
                 android:textColor="@color/black"
                 android:textSize="24sp"
+                android:fontFamily="@font/rubik"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnPlusFood"
-                app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toEndOf="@+id/btnMinusFood"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.489" />
-
-            <TextView
-                android:id="@+id/tvCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/rubik"
-                android:text="Category"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/moviePrice" />
 
             <ImageView
                 android:id="@+id/btnDelete"
