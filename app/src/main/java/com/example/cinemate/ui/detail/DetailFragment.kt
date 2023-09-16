@@ -13,9 +13,13 @@ import com.bumptech.glide.Glide
 import com.example.cinemate.MainApplication
 import com.example.cinemate.R
 import com.example.cinemate.common.loadImage
+import com.example.cinemate.data.model.AddToCartRequest
 import com.example.cinemate.data.model.GetProductDetailResponse
 import com.example.cinemate.databinding.FragmentDetailBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,6 +31,7 @@ class DetailFragment : Fragment() {
     private lateinit var binding : FragmentDetailBinding
     private val args by navArgs<DetailFragmentArgs>()
     private val viewModel by viewModels<DetailViewModel>()
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +40,7 @@ class DetailFragment : Fragment() {
         // Inflate the layout for this fragment
 
         binding = FragmentDetailBinding.inflate(inflater,container,false)
+        auth = Firebase.auth
         return binding.root
     }
 
@@ -47,6 +53,12 @@ class DetailFragment : Fragment() {
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        binding.btnAddToCart.setOnClickListener {
+            val addToCartRequest = AddToCartRequest(auth.currentUser?.uid.toString(), args.id)
+            viewModel.addToCart(addToCartRequest)
+        }
+
     }
 
     private fun observeData() = with(binding) {
@@ -64,6 +76,10 @@ class DetailFragment : Fragment() {
 
                 is DetailState.Error -> {
                     Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                }
+
+                is DetailState.AddToBag -> {
+                    Snackbar.make(requireView(), state.baseResponse.message.toString(), 1000).show()
                 }
             }
         }

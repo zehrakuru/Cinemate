@@ -34,4 +34,10 @@ interface MovieService {
     suspend fun searchProduct(
         @Query("query") query: String?
     ) : SearchProductResponse
+
+    @Headers("store: cinemate")
+    @POST(ADD_TO_CART)
+    suspend fun addToCart(
+        @Body addToCartRequest: AddToCartRequest
+    ) : BaseResponse
 }

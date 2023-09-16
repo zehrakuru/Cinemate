@@ -11,4 +11,5 @@
     <color name="backgroundStartColor">#8692f7</color>
     <color name="backgroundCenterColor">#E6E6FA</color>
     <color name="backgroundEndColor">#967bb6</color>
+    <color name="background">#F0F4F3</color>
 </resources>

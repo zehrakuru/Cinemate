@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinemate.common.Resource
+import com.example.cinemate.data.model.AddToCartRequest
+import com.example.cinemate.data.model.BaseResponse
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.repository.ProductsRepository
 import com.example.cinemate.ui.home.HomeState
@@ -19,6 +21,7 @@ class DetailViewModel @Inject constructor(private val productsRepository: Produc
     val detailState: LiveData<DetailState>
     get() = _detailState
 
+
     fun getProductDetail(id:Int) {
         viewModelScope.launch {
 
@@ -32,9 +35,24 @@ class DetailViewModel @Inject constructor(private val productsRepository: Produc
             }
         }
     }
+
+    fun addToCart(addToCartRequest: AddToCartRequest) {
+        viewModelScope.launch {
+            when(val result = productsRepository.addToCart(addToCartRequest)) {
+                is Resource.Success -> {
+                    _detailState.value = DetailState.AddToBag(result.data)
+                }
+                is Resource.Error -> {
+                    _detailState.value = DetailState.Error(result.throwable)
+                }
+            }
+        }
+    }
 }
 
 sealed interface DetailState {
     data class Data(val product: Product) : DetailState
     data class Error(val throwable: Throwable) : DetailState
+
+    data class AddToBag(val baseResponse: BaseResponse) : DetailState
 }

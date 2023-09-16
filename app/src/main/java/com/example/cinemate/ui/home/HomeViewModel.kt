@@ -37,7 +37,6 @@ class HomeViewModel @Inject constructor(private val productsRepository: Products
 
      fun getSaleProducts() {
         viewModelScope.launch {
-            //productsRepository.getSaleProducts()
             val result = productsRepository.getSaleProducts()
 
             when(result) {

@@ -3,10 +3,7 @@ package com.example.cinemate.data.repository
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.example.cinemate.common.Resource
-import com.example.cinemate.data.model.GetMoviesResponse
-import com.example.cinemate.data.model.GetProductDetailResponse
-import com.example.cinemate.data.model.GetSaleMovieResponse
-import com.example.cinemate.data.model.Product
+import com.example.cinemate.data.model.*
 import com.example.cinemate.data.source.remote.MovieService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -68,6 +65,20 @@ class ProductsRepository(private val movieService: MovieService) {
                 Resource.Error(Exception("There is no such a movie!"))
             }
         } catch(e:Exception) {
+            Resource.Error(e)
+        }
+    }
+
+    suspend fun addToCart(addToCartRequest: AddToCartRequest) : Resource<BaseResponse> {
+        return try {
+            val result = movieService.addToCart(addToCartRequest)
+
+            if(result.status==200) {
+                Resource.Success(result)
+            } else {
+                Resource.Error(Exception(result.message.toString()))
+            }
+        } catch(e: Exception) {
             Resource.Error(e)
         }
     }
