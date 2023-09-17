@@ -1,5 +1,6 @@
 package com.example.cinemate.ui.cart
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,10 +19,10 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CartFragment : Fragment(), ProductListener {
+class CartFragment : Fragment(), CartAdapter.ProductListener {
 
     private lateinit var binding : FragmentCartBinding
-    private val cartAdapter by lazy { CartAdapter(this, ::onDeleteClick) }
+    private val cartAdapter by lazy { CartAdapter(this) }
     private val viewModel by viewModels<CartViewModel>()
     private lateinit var auth: FirebaseAuth
 
@@ -56,15 +57,26 @@ class CartFragment : Fragment(), ProductListener {
                 }
             }
         }
-    }
 
-    private fun onDeleteClick(id : Int) {
-        val deleteFromCartRequest = DeleteFromCartRequest(id)
-        viewModel.deleteFromCart(deleteFromCartRequest)
+        viewModel.totalPriceAmount.observe(viewLifecycleOwner) {
+            totalPriceInCart.text = String.format("$ %.2f", it)
+        }
     }
 
     override fun onCartItemClick(id: Int) {
         val action = CartFragmentDirections.actionCartToDetail(id)
         findNavController().navigate(action)
+    }
+
+    override fun onDeleteItemClick(id: Int) {
+        viewModel.deleteFromCart(id)
+    }
+
+    override fun onIncreaseClick(price: Double?) {
+        viewModel.increase(price)
+    }
+
+    override fun onDecreaseClick(price: Double?) {
+        viewModel.decrease(price)
     }
 }

@@ -1,16 +1,12 @@
 package com.example.cinemate.ui.home
 
 import android.graphics.Color
-import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.graphics.red
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemate.R
-import com.example.cinemate.common.gone
 import com.example.cinemate.common.loadImage
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.databinding.ItemAllMovieBinding

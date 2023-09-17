@@ -97,7 +97,7 @@ class ProductsRepository(private val movieService: MovieService) {
         }
     }
 
-    suspend fun getCartProducts(userId:String?) : Resource<List<Product?>> {
+    suspend fun getCartProducts(userId:String?) : Resource<List<Product>> {
         return try {
             val result = movieService.getCartProducts(userId).products
 
