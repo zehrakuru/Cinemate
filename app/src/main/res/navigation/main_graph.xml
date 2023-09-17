@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_cartToDetail"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_cartToPayment"
+            app:destination="@id/paymentFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -68,4 +71,9 @@
             android:name="id"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="com.example.cinemate.ui.payment.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" />
 </navigation>

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.cinemate.R
@@ -40,6 +41,11 @@ class CartFragment : Fragment(), CartAdapter.ProductListener {
 
         binding.rvCart.adapter = cartAdapter
         viewModel.getCartProducts(auth.currentUser?.uid.toString())
+
+        binding.btnClearCart.setOnClickListener {
+            viewModel.clearCart(auth.currentUser?.uid.toString())
+        }
+        payButtonClick()
         observeData()
     }
 
@@ -53,6 +59,9 @@ class CartFragment : Fragment(), CartAdapter.ProductListener {
                     Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
                 }
                 is CartState.DeleteFromCart -> {
+                    Snackbar.make(requireView(), state.baseResponse.message.toString(), 1000).show()
+                }
+                is CartState.ClearCart -> {
                     Snackbar.make(requireView(), state.baseResponse.message.toString(), 1000).show()
                 }
             }
@@ -78,5 +87,13 @@ class CartFragment : Fragment(), CartAdapter.ProductListener {
 
     override fun onDecreaseClick(price: Double?) {
         viewModel.decrease(price)
+    }
+
+    private fun payButtonClick() {
+
+        binding.btnOrder.setOnClickListener {
+            val action = CartFragmentDirections.actionCartToPayment()
+            findNavController().navigate(action)
+        }
     }
 }

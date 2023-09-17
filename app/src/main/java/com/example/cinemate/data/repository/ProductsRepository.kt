@@ -1,15 +1,8 @@
 package com.example.cinemate.data.repository
 
-import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import com.example.cinemate.common.Resource
 import com.example.cinemate.data.model.*
 import com.example.cinemate.data.source.remote.MovieService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ProductsRepository(private val movieService: MovieService) {
 
@@ -86,6 +79,20 @@ class ProductsRepository(private val movieService: MovieService) {
     suspend fun deleteFromCart(deleteFromCartRequest: DeleteFromCartRequest) : Resource<BaseResponse> {
         return try {
             val result = movieService.deleteFromCart(deleteFromCartRequest)
+
+            if(result.status == 200) {
+                Resource.Success(result)
+            } else {
+                Resource.Error(Exception(result.message.toString()))
+            }
+        } catch(e: Exception) {
+            Resource.Error(e)
+        }
+    }
+
+    suspend fun clearCart(clearCartRequest: ClearCartRequest) : Resource<BaseResponse> {
+        return try {
+            val result = movieService.clearCart(clearCartRequest)
 
             if(result.status == 200) {
                 Resource.Success(result)

@@ -1,11 +1,14 @@
 package com.example.cinemate.ui.cart
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinemate.common.Resource
 import com.example.cinemate.data.model.BaseResponse
+import com.example.cinemate.data.model.ClearCartRequest
 import com.example.cinemate.data.model.DeleteFromCartRequest
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.repository.ProductsRepository
@@ -63,6 +66,22 @@ class CartViewModel @Inject constructor(private val productsRepository: Products
         }
     }
 
+    fun clearCart(userId: String) {
+        auth = Firebase.auth
+        viewModelScope.launch {
+            val clearCartRequest = ClearCartRequest(userId)
+            when(val result = productsRepository.clearCart(clearCartRequest)) {
+                is Resource.Success -> {
+                    _cartState.value = CartState.ClearCart(result.data)
+                    getCartProducts(auth.currentUser?.uid.toString())
+                }
+                is Resource.Error -> {
+                    _cartState.value = CartState.Error(result.throwable)
+                }
+            }
+        }
+    }
+
     fun increase(price: Double?) {
         _totalPriceAmount.value = price?.let { _totalPriceAmount.value?.plus(it) }
     }
@@ -71,7 +90,7 @@ class CartViewModel @Inject constructor(private val productsRepository: Products
         _totalPriceAmount.value = price?.let { _totalPriceAmount.value?.minus(it) }
     }
 
-    fun resetTotalAmount() {
+    private fun resetTotalAmount() {
         _totalPriceAmount.value = 0.0
     }
 
@@ -81,4 +100,5 @@ sealed interface CartState {
     data class Data(val products: List<Product?>) : CartState
     data class Error(val throwable: Throwable) : CartState
     data class DeleteFromCart(val baseResponse: BaseResponse) : CartState
+    data class ClearCart(val baseResponse: BaseResponse) : CartState
 }
