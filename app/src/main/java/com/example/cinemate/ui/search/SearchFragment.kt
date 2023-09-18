@@ -5,19 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.cinemate.R
-import com.example.cinemate.data.model.Product
-import com.example.cinemate.data.model.SearchProductResponse
 import com.example.cinemate.databinding.FragmentSearchBinding
 import com.example.cinemate.ui.home.MovieAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(), MovieAdapter.ProductListener {

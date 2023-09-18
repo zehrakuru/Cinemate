@@ -9,7 +9,6 @@ import com.example.cinemate.data.model.AddToCartRequest
 import com.example.cinemate.data.model.BaseResponse
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.repository.ProductsRepository
-import com.example.cinemate.ui.home.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

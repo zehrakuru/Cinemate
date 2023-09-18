@@ -12,7 +12,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="15dp"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
 
@@ -39,25 +39,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/lavender_border"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/white_bg"
+                android:elevation="4dp"
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/rubik"
                 android:hint="Name"
                 android:padding="8dp"
-                android:textColor="@color/black" />
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:autofillHints="Name" />
 
             <EditText
-                android:id="@+id/payment_number"
+                android:id="@+id/payment_credit_card"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/lavender_border"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/white_bg"
+                android:elevation="4dp"
                 android:drawableStart="@drawable/icon_credit_card"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/rubik"
                 android:hint="Credit Card Number"
+                android:digits="0123456789- "
+                android:maxLength="25"
                 android:padding="8dp"
+                android:inputType="number"
                 android:textColor="@color/black" />
 
 
@@ -66,53 +77,93 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <EditText
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/payment_month"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight=".7"
-                    android:textSize="18sp"
-                    android:hint="Month"
-                    android:fontFamily="@font/rubik"
-                    android:padding="8dp"
-                    android:layout_marginTop="20dp"
-                    android:drawableStart="@drawable/icon_calendar_month"
-                    android:drawablePadding="5dp"
-                    android:background="@drawable/lavender_border"
-                    android:textColor="@color/black" />
-
-                <EditText
-                    android:id="@+id/payment_year"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.6"
-                    android:textSize="18sp"
-                    android:hint="Year"
-                    android:fontFamily="@font/rubik"
-                    android:padding="8dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="60dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="18dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:inputType="date"
-                    android:drawableStart="@drawable/icon_calendar_year"
-                    android:drawablePadding="5dp"
-                    android:background="@drawable/lavender_border"
-                    android:textColor="@color/black" />
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="0.8"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:layout_constraintStart_toStartOf="@+id/cv_cardholder_name"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_credit_card_number">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_payment_month"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Month"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/act_payment_month"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:dropDownHeight="150dp"
+                            android:fontFamily="@font/rubik"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/payment_year"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="0.7"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="2dp"
+                    app:layout_constraintStart_toStartOf="@+id/cv_cardholder_name"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_credit_card_number">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_payment_year"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Year"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeWidth="0dp"
+                        app:boxStrokeWidthFocused="0dp">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/act_payment_year"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:dropDownHeight="150dp"
+                            android:fontFamily="@font/rubik"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <EditText
                     android:id="@+id/payment_cvc"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="0.6"
-                    android:textSize="18sp"
+                    android:layout_height="60dp"
+                    android:layout_weight="0.5"
+                    android:textSize="14sp"
                     android:inputType="number"
                     android:hint="CVC"
                     android:fontFamily="@font/rubik"
                     android:padding="8dp"
-                    android:layout_marginTop="20dp"
+                    android:maxLength="3"
+                    android:layout_marginTop="18dp"
                     android:drawableStart="@drawable/icon_credit_card"
                     android:drawablePadding="5dp"
-                    android:background="@drawable/lavender_border"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/white_bg"
+                    android:elevation="4dp"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -121,7 +172,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/lavender_border"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/white_bg"
+                android:elevation="4dp"
                 android:drawableStart="@drawable/icon_home"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/rubik"

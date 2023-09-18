@@ -5,21 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.cinemate.MainApplication
-import com.example.cinemate.R
 import com.example.cinemate.common.gone
 import com.example.cinemate.common.visible
-import com.example.cinemate.data.model.GetMoviesResponse
-import com.example.cinemate.data.model.GetSaleMovieResponse
 import com.example.cinemate.databinding.FragmentHomeBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.ProductListener {

@@ -5,25 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.example.cinemate.MainApplication
-import com.example.cinemate.R
 import com.example.cinemate.common.loadImage
 import com.example.cinemate.data.model.AddToCartRequest
-import com.example.cinemate.data.model.GetProductDetailResponse
 import com.example.cinemate.databinding.FragmentDetailBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {

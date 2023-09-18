@@ -1,17 +1,12 @@
 package com.example.cinemate.ui.cart
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.cinemate.R
-import com.example.cinemate.data.model.DeleteFromCartRequest
-import com.example.cinemate.data.model.Product
 import com.example.cinemate.databinding.FragmentCartBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth

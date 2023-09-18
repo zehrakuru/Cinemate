@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinemate.common.Resource
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.repository.ProductsRepository
-import com.example.cinemate.ui.detail.DetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
