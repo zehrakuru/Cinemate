@@ -84,5 +84,9 @@
         android:id="@+id/paymentSuccessFragment"
         android:name="com.example.cinemate.ui.paymentsuccess.PaymentSuccessFragment"
         android:label="fragment_payment_success"
-        tools:layout="@layout/fragment_payment_success" />
+        tools:layout="@layout/fragment_payment_success" >
+        <action
+            android:id="@+id/action_paymentSuccessToHome"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

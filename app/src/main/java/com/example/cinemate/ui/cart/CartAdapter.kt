@@ -1,10 +1,12 @@
 package com.example.cinemate.ui.cart
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cinemate.R
 import com.example.cinemate.common.loadImage
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.databinding.ItemCartBinding
@@ -25,6 +27,12 @@ class CartAdapter(
             ivMoviePoster.loadImage(product.imageOne)
             moviePrice.text = "$ ${product.price}"
             productAmountBasket.text = productCount.toString()
+
+            if (product.saleState==true) {
+                movieSalePrice.text = "$ ${product.salePrice}"
+                moviePrice.setTextColor(Color.parseColor("#FF0000"))
+                moviePrice.setBackgroundResource(R.drawable.strike_through)
+            }
 
             btnDelete.setOnClickListener {
                 productListener.onDeleteItemClick(product.id ?: 1)
