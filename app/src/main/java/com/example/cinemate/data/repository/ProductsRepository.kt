@@ -1,10 +1,14 @@
 package com.example.cinemate.data.repository
 
 import com.example.cinemate.common.Resource
+import com.example.cinemate.data.mapper.mapToProductUI
 import com.example.cinemate.data.model.*
+import com.example.cinemate.data.source.local.ProductDao
 import com.example.cinemate.data.source.remote.MovieService
 
-class ProductsRepository(private val movieService: MovieService) {
+class ProductsRepository(
+    private val movieService: MovieService,
+    private val productDao: ProductDao) {
 
     suspend fun getProducts(): Resource<List<Product?>> {
         return try {
@@ -112,6 +116,28 @@ class ProductsRepository(private val movieService: MovieService) {
                 Resource.Success(result)
             } else {
                 Resource.Error(Exception("The Cart is empty!"))
+            }
+        } catch (e: Exception) {
+            Resource.Error(e)
+        }
+    }
+
+    suspend fun addToFavorites(product: ProductUI) {
+        productDao.addToFavorite(product.mapToProductEntity())
+    }
+
+    suspend fun deleteProductFromFavorite(product: ProductUI) {
+        productDao.deleteFavProduct(product.mapToProductEntity())
+    }
+
+    suspend fun getFavoriteProducts(): Resource<List<ProductUI>> {
+        return try {
+            val result = productDao.getFavorites().map { it.mapToProductUI() }
+
+            if(result.isEmpty()) {
+                Resource.Error(Exception("The product could not be fav!"))
+            } else {
+                Resource.Success(result)
             }
         } catch (e: Exception) {
             Resource.Error(e)

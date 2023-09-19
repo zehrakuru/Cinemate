@@ -1,6 +1,7 @@
 package com.example.cinemate.di
 
 import com.example.cinemate.data.repository.ProductsRepository
+import com.example.cinemate.data.source.local.ProductDao
 import com.example.cinemate.data.source.remote.MovieService
 import dagger.Module
 import dagger.Provides
@@ -13,6 +14,6 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideProductRepository(movieService: MovieService): ProductsRepository =
-        ProductsRepository(movieService)
+    fun provideProductRepository(movieService: MovieService, productDao: ProductDao): ProductsRepository =
+        ProductsRepository(movieService, productDao)
 }

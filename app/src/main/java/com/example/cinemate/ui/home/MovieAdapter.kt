@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemate.R
 import com.example.cinemate.common.loadImage
+import com.example.cinemate.data.mapper.mapToProductUI
 import com.example.cinemate.data.model.Product
+import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.databinding.ItemAllMovieBinding
 
 class MovieAdapter(
@@ -33,19 +35,13 @@ class MovieAdapter(
             txtViewPrice.text = "$ ${product.price}"
             tvRate.text = "${product.rate}"
             ivMoviePoster.loadImage(product.imageOne)
+
             btnFavorite.setOnClickListener {
-                isLiked = !isLiked
-                btnFavorite.apply {
-                    if (isLiked) {
-                        playAnimation()
-                    } else {
-                        cancelAnimation()
-                        progress = 0.0f
-                    }
-                }
+                productListener.onFavoriteButtonClick(product.mapToProductUI())
+                btnFavorite.playAnimation()
             }
 
-            if (product.saleState==true) {
+            if ((product.saleState != null) && (product.saleState)) {
                 tvSalePrice.text = "$ ${product.salePrice}"
                 txtViewPrice.setTextColor(Color.parseColor("#FF0000"))
                 txtViewPrice.setBackgroundResource(R.drawable.strike_through)
@@ -69,6 +65,7 @@ class MovieAdapter(
 
     interface ProductListener {
         fun onProductClick(id:Int)
+        fun onFavoriteButtonClick(product: ProductUI)
     }
 
 }

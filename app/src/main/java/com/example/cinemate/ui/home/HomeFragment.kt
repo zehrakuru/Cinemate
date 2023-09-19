@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.cinemate.common.gone
 import com.example.cinemate.common.visible
+import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.databinding.FragmentHomeBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +45,10 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
     override fun onProductClick(id: Int) {
         val action = HomeFragmentDirections.actionHomeToDetail(id)
         findNavController().navigate(action)
+    }
+
+    override fun onFavoriteButtonClick(product: ProductUI) {
+        viewModel.addToFavorites(product)
     }
 
     private fun observeData() {

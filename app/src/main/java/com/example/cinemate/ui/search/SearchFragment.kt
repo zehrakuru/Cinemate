@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.databinding.FragmentSearchBinding
 import com.example.cinemate.ui.home.MovieAdapter
 import com.google.android.material.snackbar.Snackbar
@@ -62,5 +63,9 @@ class SearchFragment : Fragment(), MovieAdapter.ProductListener {
     override fun onProductClick(id: Int) {
         val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(id)
         findNavController().navigate(action)
+    }
+
+    override fun onFavoriteButtonClick(product: ProductUI) {
+        TODO("Not yet implemented")
     }
 }
