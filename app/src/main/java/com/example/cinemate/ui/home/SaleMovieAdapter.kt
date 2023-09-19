@@ -16,10 +16,23 @@ class SaleMovieAdapter(
     class SaleMovieViewHolder(
         private val binding: ItemMovieCardBinding,
         private val productListener: SaleMovieAdapter.ProductListener) : RecyclerView.ViewHolder(binding.root) {
+        private var isLiked: Boolean = false
         fun bind(product: Product) = with(binding) {
             tvMovieName.text = product.title
             tvPrice.text = "$ ${product.price}"
             tvSalePrice.text = "\$ ${product.salePrice}"
+
+            btnFavorite.setOnClickListener {
+                isLiked = !isLiked
+                btnFavorite.apply {
+                    if (isLiked) {
+                        playAnimation()
+                    } else {
+                        cancelAnimation()
+                        progress = 0.0f
+                    }
+                }
+            }
 
             imageViewMovie.loadImage(product.imageOne)
 

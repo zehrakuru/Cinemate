@@ -75,6 +75,20 @@
                 app:layout_constraintStart_toEndOf="@+id/txtViewPrice"
                 app:layout_constraintTop_toBottomOf="@+id/tvMovieTitle" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/btnFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="false"
+                app:lottie_fileName="addfavorite.json"
+                app:lottie_speed="1.5" />
+
             <TextView
                 android:id="@+id/tvRate"
                 android:layout_width="wrap_content"

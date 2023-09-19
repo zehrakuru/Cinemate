@@ -42,7 +42,6 @@ class PaymentSuccessFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentPaymentSuccessBinding.inflate(inflater, container, false)
         auth = Firebase.auth
         return binding.root
