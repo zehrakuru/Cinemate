@@ -7,21 +7,20 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinemate.common.Resource
 import com.example.cinemate.data.model.*
 import com.example.cinemate.data.repository.ProductsRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.cinemate.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor(private val productsRepository: ProductsRepository) : ViewModel() {
+class CartViewModel @Inject constructor(
+    private val productsRepository: ProductsRepository,
+    private val userRepository: UserRepository
+    ) : ViewModel() {
 
     private var _cartState = MutableLiveData<CartState>()
     val cartState: LiveData<CartState>
         get() = _cartState
-
-    private lateinit var auth: FirebaseAuth
 
     private val _totalPriceAmount = MutableLiveData(0.0)
     val totalPriceAmount: LiveData<Double> = _totalPriceAmount
@@ -50,13 +49,12 @@ class CartViewModel @Inject constructor(private val productsRepository: Products
     }
 
     fun deleteFromCart(id: Int) {
-        auth = Firebase.auth
         viewModelScope.launch {
             val deleteFromCartRequest = DeleteFromCartRequest(id)
             when(val result = productsRepository.deleteFromCart(deleteFromCartRequest)) {
                 is Resource.Success -> {
                     _cartState.value = CartState.DeleteFromCart(result.data)
-                    getCartProducts(auth.currentUser?.uid.toString())
+                    getCartProducts(userRepository.getFirebaseUserUid())
                 }
                 is Resource.Error -> {
                     _cartState.value = CartState.Error(result.throwable)
@@ -66,13 +64,12 @@ class CartViewModel @Inject constructor(private val productsRepository: Products
     }
 
     fun clearCart(userId: String) {
-        auth = Firebase.auth
         viewModelScope.launch {
             val clearCartRequest = ClearCartRequest(userId)
             when(val result = productsRepository.clearCart(clearCartRequest)) {
                 is Resource.Success -> {
                     _cartState.value = CartState.ClearCart(result.data)
-                    getCartProducts(auth.currentUser?.uid.toString())
+                    getCartProducts(userRepository.getFirebaseUserUid())
                 }
                 is Resource.Error -> {
                     _cartState.value = CartState.Error(result.throwable)

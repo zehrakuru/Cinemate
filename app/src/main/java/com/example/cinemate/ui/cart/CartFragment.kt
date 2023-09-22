@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.cinemate.common.gone
 import com.example.cinemate.common.visible
 import com.example.cinemate.databinding.FragmentCartBinding
+import com.example.cinemate.ui.signin.UserAuthViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,6 +23,7 @@ class CartFragment : Fragment(), CartAdapter.ProductListener {
     private lateinit var binding : FragmentCartBinding
     private val cartAdapter by lazy { CartAdapter(this) }
     private val viewModel by viewModels<CartViewModel>()
+    private val authViewModel by viewModels<UserAuthViewModel>()
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
@@ -50,12 +52,12 @@ class CartFragment : Fragment(), CartAdapter.ProductListener {
         viewModel.cartState.observe(viewLifecycleOwner) {state ->
             when(state) {
                 is CartState.Data -> {
-                    binding.rvCart.visible()
+                    rvCart.visible()
                     cartAdapter.submitList(state.products)
                 }
                 is CartState.Error -> {
                     Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
-                    binding.rvCart.gone()
+                    rvCart.gone()
                 }
                 is CartState.DeleteFromCart -> {
                     Snackbar.make(requireView(), state.baseResponse.message.toString(), 1000).show()

@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.cinemate.R
 import com.example.cinemate.databinding.FragmentSignUpBinding
+import com.example.cinemate.ui.signin.UserAuthState
+import com.example.cinemate.ui.signin.UserAuthViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -19,11 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
-    private lateinit var auth: FirebaseAuth
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val viewModel by viewModels<UserAuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +30,12 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
-        auth = Firebase.auth
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeData()
 
         with(binding) {
             signupButton.setOnClickListener {
@@ -39,7 +43,7 @@ class SignUpFragment : Fragment() {
                 val password = signupPassword.text.toString()
 
                 if(email.isNotEmpty() && password.isNotEmpty()) {
-                    signUp(email,password)
+                    viewModel.signUpUser(email, password)
                 } else {
                     Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
                 }
@@ -48,19 +52,23 @@ class SignUpFragment : Fragment() {
                 findNavController().navigate(R.id.action_signUptoSignIn)
             }
         }
-        return binding.root
+
     }
 
 
+    private fun observeData() = with(binding) {
 
+        viewModel.authState.observe(viewLifecycleOwner) { state ->
 
-    private fun signUp(email: String, password: String) {
+            when (state) {
+                is UserAuthState.Data -> {
+                    findNavController().navigate(R.id.action_signUpToHome)
+                }
 
-        auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
-            findNavController().navigate(R.id.action_signUpToHome)
-        }.addOnFailureListener {
-            Snackbar.make(requireView(), it.message.orEmpty(), 1000).show()
-            //show snackbar (it.message.orEmpty())
+                is UserAuthState.Error -> {
+                    Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                }
+            }
         }
     }
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cinemate.common.Resource
 import com.example.cinemate.data.model.AddToCartRequest
 import com.example.cinemate.data.model.BaseResponse
-import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.data.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

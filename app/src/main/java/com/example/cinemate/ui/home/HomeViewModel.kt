@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinemate.common.Resource
-import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.data.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

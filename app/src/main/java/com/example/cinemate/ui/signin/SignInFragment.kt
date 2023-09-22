@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.cinemate.R
 import com.example.cinemate.databinding.FragmentSignInBinding
@@ -19,11 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignInFragment : Fragment() {
 
     private lateinit var binding: FragmentSignInBinding
-    private lateinit var auth: FirebaseAuth
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val viewModel by viewModels<UserAuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,9 +28,14 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater,container, false)
-        auth = Firebase.auth
+        return binding.root
+    }
 
-        auth.currentUser?.let {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeData()
+
+        viewModel.currentUser?.let {
             findNavController().navigate(R.id.action_signInToHome)
         }
 
@@ -43,7 +45,7 @@ class SignInFragment : Fragment() {
                 val password = loginPassword.text.toString()
 
                 if(email.isNotEmpty() && password.isNotEmpty()) {
-                    signIn(email,password)
+                    viewModel.signInUser(email, password)
                 } else {
                     Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
                 }
@@ -52,16 +54,22 @@ class SignInFragment : Fragment() {
                 findNavController().navigate(R.id.action_signInToSignUp)
             }
         }
-        return binding.root
+
     }
 
+    private fun observeData() = with(binding) {
 
+        viewModel.authState.observe(viewLifecycleOwner) { state ->
 
-    private fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
-            findNavController().navigate(R.id.action_signInToHome)
-        }.addOnFailureListener {
-            Snackbar.make(requireView(), it.message.orEmpty(), 1000).show()
+            when (state) {
+                is UserAuthState.Data -> {
+                    findNavController().navigate(R.id.action_signInToHome)
+                }
+
+                is UserAuthState.Error -> {
+                    Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                }
+            }
         }
     }
 }

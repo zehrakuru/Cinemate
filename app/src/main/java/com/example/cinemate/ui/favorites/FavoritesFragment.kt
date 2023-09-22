@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.cinemate.R
+import com.example.cinemate.common.gone
+import com.example.cinemate.common.visible
 import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.databinding.FragmentFavoritesBinding
 import com.example.cinemate.ui.home.MovieAdapter
@@ -32,7 +34,7 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.FavoriteProductListener {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getFavoriteProducts()
-        binding.rvSearch.adapter = favAdapter
+        binding.rvFavorite.adapter = favAdapter
         observeData()
     }
 
@@ -40,10 +42,12 @@ class FavoritesFragment : Fragment(), FavoritesAdapter.FavoriteProductListener {
         viewModel.favState.observe(viewLifecycleOwner) {state ->
             when(state) {
                 is FavState.Data -> {
+                    rvFavorite.visible()
                     favAdapter.submitList(state.products)
                 }
                 is FavState.Error -> {
                     Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                    rvFavorite.gone()
                 }
             }
         }

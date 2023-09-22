@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemate.R
 import com.example.cinemate.common.loadImage
-import com.example.cinemate.data.mapper.mapToProductUI
-import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.databinding.ItemAllMovieBinding
 

@@ -10,6 +10,7 @@ import com.example.cinemate.data.model.ClearCartRequest
 import com.example.cinemate.data.model.Product
 import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.data.repository.ProductsRepository
+import com.example.cinemate.data.repository.UserRepository
 import com.example.cinemate.ui.cart.CartState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -19,13 +20,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PaymentSuccessViewModel @Inject constructor(private val productsRepository: ProductsRepository) : ViewModel() {
+class PaymentSuccessViewModel @Inject constructor(
+    private val productsRepository: ProductsRepository,
+    private val userRepository: UserRepository) : ViewModel() {
 
     private var _successState = MutableLiveData<SuccessState>()
     val successState: LiveData<SuccessState>
         get() = _successState
-
-    private lateinit var auth: FirebaseAuth
 
     private val _totalPriceAmount = MutableLiveData(0.0)
     val totalPriceAmount: LiveData<Double> = _totalPriceAmount
@@ -50,13 +51,12 @@ class PaymentSuccessViewModel @Inject constructor(private val productsRepository
     }
 
     fun clearCart(userId: String) {
-        auth = Firebase.auth
         viewModelScope.launch {
             val clearCartRequest = ClearCartRequest(userId)
             when(val result = productsRepository.clearCart(clearCartRequest)) {
                 is Resource.Success -> {
                     _successState.value = SuccessState.ClearCart(result.data)
-                    getCartProducts(auth.currentUser?.uid.toString())
+                    getCartProducts(userRepository.getFirebaseUserUid())
                 }
                 is Resource.Error -> {
                     _successState.value = SuccessState.Error(result.throwable)
