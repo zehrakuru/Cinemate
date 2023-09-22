@@ -12,22 +12,6 @@ data class ProductUI(
     val rate: Double,
     val salePrice: Double,
     val saleState: Boolean,
-    val title: String
-) {
-    fun mapToProductEntity(): ProductEntity {
-        return ProductEntity(
-            category = category,
-            count = count,
-            description = description,
-            id = id,
-            imageOne = imageOne,
-            imageThree = imageThree,
-            imageTwo = imageTwo,
-            price = price,
-            rate = rate,
-            salePrice = salePrice,
-            saleState = saleState,
-            title = title
-        )
-    }
-}
+    val title: String,
+    val isFavorite: Boolean
+)

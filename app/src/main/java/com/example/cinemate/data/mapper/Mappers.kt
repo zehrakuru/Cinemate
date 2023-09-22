@@ -18,10 +18,11 @@ fun ProductEntity.mapToProductUI() : ProductUI {
         salePrice = salePrice ?: 0.0,
         saleState = saleState ?: false,
         title = title.orEmpty(),
+        isFavorite = true
     )
 }
 
-fun Product.mapToProductUI(): ProductUI {
+fun Product.mapToProductUI(isFavorite: Boolean): ProductUI {
     return ProductUI(
         category = category.orEmpty(),
         count = count ?: 1,
@@ -34,6 +35,25 @@ fun Product.mapToProductUI(): ProductUI {
         rate = rate ?: 0.0,
         salePrice = salePrice ?: 0.0,
         saleState = saleState ?: false,
-        title = title.orEmpty()
+        title = title.orEmpty(),
+        isFavorite = isFavorite
     )
 }
+
+fun ProductUI.mapToProductEntity(): ProductEntity {
+    return ProductEntity(
+        category = category,
+        count = count,
+        description = description,
+        id = id,
+        imageOne = imageOne,
+        imageThree = imageThree,
+        imageTwo = imageTwo,
+        price = price,
+        rate = rate,
+        salePrice = salePrice,
+        saleState = saleState,
+        title = title
+    )
+}
+

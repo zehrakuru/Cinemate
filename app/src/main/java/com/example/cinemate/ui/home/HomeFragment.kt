@@ -3,15 +3,23 @@ package com.example.cinemate.ui.home
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import com.example.cinemate.R
 import com.example.cinemate.common.gone
 import com.example.cinemate.common.visible
 import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.databinding.FragmentHomeBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,6 +29,7 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
     private val movieAdapter by lazy {MovieAdapter(this)}
     private val saleMovieAdapter by lazy { SaleMovieAdapter(this) }
     private val viewModel by viewModels<HomeViewModel>()
+    private lateinit var auth: FirebaseAuth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,6 +40,8 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
         binding.rvFirst.adapter = saleMovieAdapter
         viewModel.getSaleProducts()
         observeData()
+
+        logOut()
     }
 
     override fun onCreateView(
@@ -39,6 +50,7 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater,container,false)
+        auth = Firebase.auth
         return binding.root
     }
 
@@ -76,5 +88,28 @@ class HomeFragment : Fragment(), MovieAdapter.ProductListener, SaleMovieAdapter.
     override fun onSaleClick(id: Int) {
         val action = HomeFragmentDirections.actionHomeToDetail(id)
         findNavController().navigate(action)
+    }
+
+    private fun logOut() {
+        val showPopUp = PopupMenu(
+            context,
+            binding.ivProfilIcon
+        )
+
+        showPopUp.menu.add(Menu.NONE, 0, 0, "Log Out")
+
+        showPopUp.setOnMenuItemClickListener { menuItem ->
+            val id = menuItem.itemId
+            if (id == 0) {
+                FirebaseAuth.getInstance().signOut()
+                val action = HomeFragmentDirections.actionHomeToSignIn()
+                findNavController().navigate(action)
+            }
+            false
+        }
+
+        binding.ivProfilIcon.setOnClickListener {
+            showPopUp.show()
+        }
     }
 }

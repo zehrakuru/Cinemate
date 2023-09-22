@@ -1,6 +1,7 @@
 package com.example.cinemate.data.repository
 
 import com.example.cinemate.common.Resource
+import com.example.cinemate.data.mapper.mapToProductEntity
 import com.example.cinemate.data.mapper.mapToProductUI
 import com.example.cinemate.data.model.*
 import com.example.cinemate.data.source.local.ProductDao
@@ -10,54 +11,61 @@ class ProductsRepository(
     private val movieService: MovieService,
     private val productDao: ProductDao) {
 
-    suspend fun getProducts(): Resource<List<Product?>> {
+    suspend fun getProducts(): Resource<List<ProductUI>> {
         return try {
-            val result = movieService.getProducts().products
-
-            if(result.isNullOrEmpty()) {
+            val favoriteNamesList = getFavoritesNamesList()
+            val result = movieService.getProducts().products.orEmpty()
+            if(result.isEmpty()) {
                 Resource.Error(Exception("Movies are not found!"))
             } else {
-                Resource.Success(result)
+                Resource.Success(result.map {
+                    it.mapToProductUI(isFavorite = favoriteNamesList.contains(it.title))
+                })
             }
         } catch (e: Exception) {
             Resource.Error(e)
         }
     }
 
-    suspend fun getSaleProducts() : Resource<List<Product?>> {
+    suspend fun getSaleProducts() : Resource<List<ProductUI>> {
         return try {
-            val result = movieService.getSaleProducts().products
+            val favoriteNamesList = getFavoritesNamesList()
+            val result = movieService.getSaleProducts().products.orEmpty()
 
-            if(result.isNullOrEmpty()) {
+            if(result.isEmpty()) {
                 Resource.Error(Exception("Sale Movies are not found!"))
             } else {
-                Resource.Success(result)
+                Resource.Success(result.map {
+                    it.mapToProductUI(isFavorite = favoriteNamesList.contains(it.title))
+                })
             }
         } catch (e: Exception) {
             Resource.Error(e)
         }
     }
 
-    suspend fun getProductDetail(id:Int) : Resource<Product> {
+    suspend fun getProductDetail(id:Int) : Resource<ProductUI> {
         return try {
 
+            val favoriteNamesList = getFavoritesNamesList()
             val result = movieService.getProductDetail(id).product
-            result?.let{
-                Resource.Success(it)
-            } ?: kotlin.run {
-                Resource.Error(Exception("Detail is not found!"))
+            result.let{
+                Resource.Success(it.mapToProductUI(isFavorite = favoriteNamesList.contains(it.title)))
             }
         } catch (e: Exception) {
             Resource.Error(e)
         }
     }
 
-    suspend fun searchProduct(query:String?) : Resource<List<Product?>> {
+    suspend fun searchProduct(query:String?) : Resource<List<ProductUI>> {
 
         return try {
+            val favoriteNamesList = getFavoritesNamesList()
             val result = movieService.searchProduct(query).products
             result?.let{
-                Resource.Success(it)
+                Resource.Success(result.map {
+                    it.mapToProductUI(isFavorite = favoriteNamesList.contains(it.title))
+                })
             } ?: kotlin.run {
                 Resource.Error(Exception("There is no such a movie!"))
             }
@@ -108,14 +116,17 @@ class ProductsRepository(
         }
     }
 
-    suspend fun getCartProducts(userId:String?) : Resource<List<Product>> {
+    suspend fun getCartProducts(userId:String?) : Resource<List<ProductUI>> {
         return try {
-            val result = movieService.getCartProducts(userId).products
+            val favoriteNamesList = getFavoritesNamesList()
+            val result = movieService.getCartProducts(userId)
 
-            if(result != null) {
-                Resource.Success(result)
+            if(result.status == 200) {
+                Resource.Success(result.products.orEmpty().map {
+                    it.mapToProductUI(isFavorite = favoriteNamesList.contains(it.title))
+                })
             } else {
-                Resource.Error(Exception("The Cart is empty!"))
+                Resource.Error(Exception(result.message.orEmpty()))
             }
         } catch (e: Exception) {
             Resource.Error(e)
@@ -130,12 +141,14 @@ class ProductsRepository(
         productDao.deleteFavProduct(product.mapToProductEntity())
     }
 
+    suspend fun getFavoritesNamesList() = productDao.getFavoritesTitles()
+
     suspend fun getFavoriteProducts(): Resource<List<ProductUI>> {
         return try {
             val result = productDao.getFavorites().map { it.mapToProductUI() }
 
             if(result.isEmpty()) {
-                Resource.Error(Exception("The product could not be fav!"))
+                Resource.Error(Exception("There are no products here!"))
             } else {
                 Resource.Success(result)
             }

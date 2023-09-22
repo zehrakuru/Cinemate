@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cinemate.common.Resource
-import com.example.cinemate.data.model.BaseResponse
-import com.example.cinemate.data.model.ClearCartRequest
-import com.example.cinemate.data.model.DeleteFromCartRequest
-import com.example.cinemate.data.model.Product
+import com.example.cinemate.data.model.*
 import com.example.cinemate.data.repository.ProductsRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -37,7 +34,11 @@ class CartViewModel @Inject constructor(private val productsRepository: Products
                 is Resource.Success -> {
                     _cartState.value = CartState.Data(result.data)
                     _totalPriceAmount.value = result.data.sumOf {
-                        it.price ?: 0.0
+                        if(it.saleState != true) {
+                            it.price
+                        } else {
+                            it.salePrice
+                        }
                     }
                 }
                 is Resource.Error -> {
@@ -95,7 +96,7 @@ class CartViewModel @Inject constructor(private val productsRepository: Products
 }
 
 sealed interface CartState {
-    data class Data(val products: List<Product?>) : CartState
+    data class Data(val products: List<ProductUI>) : CartState
     data class Error(val throwable: Throwable) : CartState
     data class DeleteFromCart(val baseResponse: BaseResponse) : CartState
     data class ClearCart(val baseResponse: BaseResponse) : CartState

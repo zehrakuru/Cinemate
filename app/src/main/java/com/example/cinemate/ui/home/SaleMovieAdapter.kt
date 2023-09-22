@@ -7,31 +7,38 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemate.common.loadImage
 import com.example.cinemate.data.model.Product
+import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.databinding.ItemMovieCardBinding
 
 class SaleMovieAdapter(
-    private val productListener: SaleMovieAdapter.ProductListener
-) : ListAdapter<Product, SaleMovieAdapter.SaleMovieViewHolder>(ProductDiffCallBack()) {
+    private val productListener: ProductListener
+) : ListAdapter<ProductUI, SaleMovieAdapter.SaleMovieViewHolder>(ProductDiffCallBack()) {
 
     class SaleMovieViewHolder(
         private val binding: ItemMovieCardBinding,
-        private val productListener: SaleMovieAdapter.ProductListener) : RecyclerView.ViewHolder(binding.root) {
-        private var isLiked: Boolean = false
-        fun bind(product: Product) = with(binding) {
+        private val productListener: ProductListener) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(product: ProductUI) = with(binding) {
             tvMovieName.text = product.title
             tvPrice.text = "$ ${product.price}"
             tvSalePrice.text = "\$ ${product.salePrice}"
+
+            var isLiked = product.isFavorite
 
             btnFavorite.setOnClickListener {
                 isLiked = !isLiked
                 btnFavorite.apply {
                     if (isLiked) {
+                        productListener.onFavoriteButtonClick(product)
                         playAnimation()
                     } else {
                         cancelAnimation()
                         progress = 0.0f
                     }
                 }
+            }
+
+            if(product.isFavorite) {
+                btnFavorite.playAnimation()
             }
 
             imageViewMovie.loadImage(product.imageOne)
@@ -51,17 +58,18 @@ class SaleMovieAdapter(
         holder.bind(getItem(position))
     }
 
-    class ProductDiffCallBack : DiffUtil.ItemCallback<Product>() {
-        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+    class ProductDiffCallBack : DiffUtil.ItemCallback<ProductUI>() {
+        override fun areItemsTheSame(oldItem: ProductUI, newItem: ProductUI): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        override fun areContentsTheSame(oldItem: ProductUI, newItem: ProductUI): Boolean {
             return oldItem == newItem
         }
     }
 
     interface ProductListener {
         fun onSaleClick(id:Int)
+        fun onFavoriteButtonClick(product: ProductUI)
     }
 }

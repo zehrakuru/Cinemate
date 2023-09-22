@@ -15,7 +15,7 @@ import com.example.cinemate.databinding.ItemAllMovieBinding
 
 class MovieAdapter(
     private val productListener: ProductListener
-) : ListAdapter<Product, MovieAdapter.MovieViewHolder>(ProductDiffCallBack()) {
+) : ListAdapter<ProductUI, MovieAdapter.MovieViewHolder>(ProductDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
         MovieViewHolder(
@@ -29,36 +29,50 @@ class MovieAdapter(
     class MovieViewHolder(
         private val binding: ItemAllMovieBinding,
         private val productListener: ProductListener) : RecyclerView.ViewHolder(binding.root) {
-        private var isLiked: Boolean = false
-        fun bind(product: Product) = with(binding) {
+        fun bind(product: ProductUI) = with(binding) {
             tvMovieTitle.text = product.title
             txtViewPrice.text = "$ ${product.price}"
             tvRate.text = "${product.rate}"
             ivMoviePoster.loadImage(product.imageOne)
 
+            var isLiked = product.isFavorite
+
             btnFavorite.setOnClickListener {
-                productListener.onFavoriteButtonClick(product.mapToProductUI())
+                isLiked = !isLiked
+                btnFavorite.apply {
+                    if (isLiked) {
+                        productListener.onFavoriteButtonClick(product)
+                        playAnimation()
+                    } else {
+                        cancelAnimation()
+                        progress = 0.0f
+                    }
+                }
+            }
+
+            if(product.isFavorite) {
                 btnFavorite.playAnimation()
             }
 
-            if ((product.saleState != null) && (product.saleState)) {
+
+            if (product.saleState) {
                 tvSalePrice.text = "$ ${product.salePrice}"
                 txtViewPrice.setTextColor(Color.parseColor("#FF0000"))
                 txtViewPrice.setBackgroundResource(R.drawable.strike_through)
             }
 
             root.setOnClickListener {
-                productListener.onProductClick(product.id ?: 1)
+                productListener.onProductClick(product.id)
             }
         }
     }
 
-    class ProductDiffCallBack : DiffUtil.ItemCallback<Product>() {
-        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
+    class ProductDiffCallBack : DiffUtil.ItemCallback<ProductUI>() {
+        override fun areItemsTheSame(oldItem: ProductUI, newItem: ProductUI): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
+        override fun areContentsTheSame(oldItem: ProductUI, newItem: ProductUI): Boolean {
             return oldItem == newItem
         }
     }

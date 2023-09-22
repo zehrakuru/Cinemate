@@ -8,6 +8,7 @@ import com.example.cinemate.common.Resource
 import com.example.cinemate.data.model.BaseResponse
 import com.example.cinemate.data.model.ClearCartRequest
 import com.example.cinemate.data.model.Product
+import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.data.repository.ProductsRepository
 import com.example.cinemate.ui.cart.CartState
 import com.google.firebase.auth.FirebaseAuth
@@ -70,7 +71,7 @@ class PaymentSuccessViewModel @Inject constructor(private val productsRepository
 }
 
 sealed interface SuccessState {
-    data class Data(val products: List<Product?>) : SuccessState
+    data class Data(val products: List<ProductUI>) : SuccessState
     data class Error(val throwable: Throwable) : SuccessState
     data class ClearCart(val baseResponse: BaseResponse) : SuccessState
 }

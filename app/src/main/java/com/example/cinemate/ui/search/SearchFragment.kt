@@ -66,6 +66,6 @@ class SearchFragment : Fragment(), MovieAdapter.ProductListener {
     }
 
     override fun onFavoriteButtonClick(product: ProductUI) {
-        TODO("Not yet implemented")
+        viewModel.addToFavorites(product)
     }
 }

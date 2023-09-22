@@ -33,7 +33,7 @@ class SignInFragment : Fragment() {
         binding = FragmentSignInBinding.inflate(inflater,container, false)
         auth = Firebase.auth
 
-        auth.currentUser.let {
+        auth.currentUser?.let {
             findNavController().navigate(R.id.action_signInToHome)
         }
 

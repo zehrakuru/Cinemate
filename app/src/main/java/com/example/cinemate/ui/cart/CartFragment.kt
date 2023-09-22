@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.cinemate.common.gone
+import com.example.cinemate.common.visible
 import com.example.cinemate.databinding.FragmentCartBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -48,10 +50,12 @@ class CartFragment : Fragment(), CartAdapter.ProductListener {
         viewModel.cartState.observe(viewLifecycleOwner) {state ->
             when(state) {
                 is CartState.Data -> {
+                    binding.rvCart.visible()
                     cartAdapter.submitList(state.products)
                 }
                 is CartState.Error -> {
                     Snackbar.make(requireView(), state.throwable.message.orEmpty(), 1000).show()
+                    binding.rvCart.gone()
                 }
                 is CartState.DeleteFromCart -> {
                     Snackbar.make(requireView(), state.baseResponse.message.toString(), 1000).show()

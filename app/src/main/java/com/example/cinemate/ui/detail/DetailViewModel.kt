@@ -8,6 +8,7 @@ import com.example.cinemate.common.Resource
 import com.example.cinemate.data.model.AddToCartRequest
 import com.example.cinemate.data.model.BaseResponse
 import com.example.cinemate.data.model.Product
+import com.example.cinemate.data.model.ProductUI
 import com.example.cinemate.data.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -50,7 +51,7 @@ class DetailViewModel @Inject constructor(private val productsRepository: Produc
 }
 
 sealed interface DetailState {
-    data class Data(val product: Product) : DetailState
+    data class Data(val product: ProductUI) : DetailState
     data class Error(val throwable: Throwable) : DetailState
     data class AddToBag(val baseResponse: BaseResponse) : DetailState
 }

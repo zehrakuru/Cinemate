@@ -106,7 +106,7 @@
                             android:id="@+id/act_payment_month"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:dropDownHeight="150dp"
+                            android:dropDownHeight="120dp"
                             android:fontFamily="@font/rubik"
                             android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -140,7 +140,7 @@
                             android:id="@+id/act_payment_year"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:dropDownHeight="150dp"
+                            android:dropDownHeight="120dp"
                             android:fontFamily="@font/rubik"
                             android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
