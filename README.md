@@ -1,4 +1,4 @@
-# Capstone Project: Cinemate
+# Capstone Project: "Cinemate", Cinema is your Mate!
 
 Up School'un verdiği bitirme projesi; E-Commerce Uygulaması.
 
