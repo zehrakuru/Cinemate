@@ -23,7 +23,6 @@ class CartFragment : Fragment(), CartAdapter.ProductListener {
     private lateinit var binding : FragmentCartBinding
     private val cartAdapter by lazy { CartAdapter(this) }
     private val viewModel by viewModels<CartViewModel>()
-    private val authViewModel by viewModels<UserAuthViewModel>()
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
