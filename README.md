@@ -4,7 +4,8 @@ Up School'un verdiği bitirme projesi; E-Commerce Uygulaması.
 
 # Sunum Linki
 
-Sunum linki eklenmiştir.
+Sunum linki eklenmiştir. Link -> [CapstoneProject_ZehraKuru.pdf](https://github.com/zehrakuru/Cinemate/files/12704828/CapstoneProject_ZehraKuru.pdf)
+
 
 # Splash & Sign In & Sign Up Screens
 
@@ -31,11 +32,11 @@ Sunum linki eklenmiştir.
 | ![Screenshot 2023-09-23 003020](https://github.com/zehrakuru/Cinemate/assets/74616481/71b17cd9-47b2-4e65-8fb1-7df9fdc3011c) | ![Screenshot 2023-09-23 003047](https://github.com/zehrakuru/Cinemate/assets/74616481/3e17a44a-6ca9-4841-a4eb-8cdd6b8f76a3) |
 
 
-# Add or Edit (Bottom Sheet Dialog Fragment) Screens
+# Cart & Favorites Screens
 
-| Add Screen                | Expense Edit Screen       | Income Edit Screen   |
-| ------------------------- | ------------------------- | ---------------------|
-| ![Screenshot 2023-08-26 191011](https://github.com/zehrakuru/BudgetApp/assets/74616481/452ae371-1255-4923-b2f4-7110b8e54b39) | ![Screenshot 2023-08-26 190902](https://github.com/zehrakuru/BudgetApp/assets/74616481/ce28de23-791d-4be4-9146-97ab4d8dcfaa) | ![Screenshot 2023-08-26 190802](https://github.com/zehrakuru/BudgetApp/assets/74616481/4d2bd466-dbd9-43b8-a440-0ceea5623b1a) | 
+| Cart Screen               | Favorites Screen          | 
+| ------------------------- | ------------------------- | 
+| ![Screenshot 2023-09-23 005604](https://github.com/zehrakuru/Cinemate/assets/74616481/2cda6372-b81b-409e-8530-9e7c9bbbf65d) | ![Screenshot 2023-09-23 005642](https://github.com/zehrakuru/Cinemate/assets/74616481/95d33cb3-78f8-402e-9236-a16eacd8a3a5) |
 
 # Structures
 
